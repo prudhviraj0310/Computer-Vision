@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrafficEye AI | Bengaluru Traffic Violation Detection & Enforcement</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- --- SIDEBAR NAVIGATION --- -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo" style="background: var(--accent-gradient);">T</div>
+        <div class="brand-name">TrafficEye AI</div>
+      </div>
+      
+      <nav class="nav-menu">
+        <div class="nav-item active" data-tab="realtime">
+          <svg viewBox="0 0 24 24"><path d="M2 12h20M12 2v20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Real-Time Pipeline
+        </div>
+        <div class="nav-item" data-tab="analytics">
+          <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Analytics & Trends
+        </div>
+        <div class="nav-item" data-tab="ledger">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Violations Ledger
+        </div>
+        <div class="nav-item" data-tab="btphub">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><polygon points="12 11 12 17 17 14"/></svg>
+          BTP Submission Hub
+        </div>
+        <div class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          System Settings
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="status-card">
+          <div class="status-item">
+            <span>AI Core Agent:</span>
+            <span><span class="status-dot"></span>ACTIVE</span>
+          </div>
+          <div class="status-item" style="margin-top: 0.5rem;">
+            <span>Detection Stack:</span>
+            <span style="color: var(--text-secondary);">YOLOv11 & DeepSORT</span>
+          </div>
+          <div class="status-item" style="margin-top: 0.5rem;">
+            <span>OCR Reader:</span>
+            <span style="color: var(--accent-cyan); font-weight: 700;">EasyOCR Engine</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- --- MAIN CONTENT AREA --- -->
+    <main class="main-content">
+      
+      <!-- --- TAB 1: REAL-TIME CV PIPELINE --- -->
+      <section id="tab-realtime" class="tab-pane active">
+        <div class="section-header">
+          <div class="header-title">
+            <h1>BTP Intelligent Violation Detection</h1>
+            <p>Computer vision analysis pipeline with real-time risk classification and plate OCR</p>
+          </div>
+          <div class="header-actions">
+            <span id="pipeline-status-indicator" class="severity-badge badge-info" style="font-weight: 700;">SYSTEM IDLE</span>
+          </div>
+        </div>
+        
+        <div class="cv-pipeline-grid">
+          <!-- Left: Scenario selector -->
+          <div class="scenarios-container">
+            <h3 style="font-size: 0.95rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem;">Test Scenarios</h3>
+            <div id="scenarios-list">
+              <!-- Rendered via JavaScript -->
+            </div>
+            
+            <div class="upload-zone" id="upload-zone">
+              <input type="file" id="file-uploader" style="display: none;" accept="image/*">
+              <div class="upload-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              </div>
+              <div class="upload-text">Upload Traffic Image</div>
+              <div class="upload-sub">Supports PNG, JPG, JPEG</div>
+            </div>
+
+            <!-- ═══ LIVE CAMERA CONNECTION PANEL ═══ -->
+            <div class="live-camera-panel" id="live-camera-panel">
+              <div class="live-panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                <span>Live Camera Feed</span>
+                <span class="live-badge" id="live-badge" style="display:none;">● LIVE</span>
+              </div>
+
+              <div class="stream-url-group">
+                <input type="text" id="stream-url-input" class="stream-url-input" 
+                       placeholder="Stream URL (http://, rtsp://, or 0 for webcam)" 
+                       value="">
+                <select id="stream-type-select" class="stream-type-select">
+                  <option value="auto">Auto-detect</option>
+                  <option value="mjpeg">MJPEG</option>
+                  <option value="rtsp">RTSP</option>
+                  <option value="hls">HLS</option>
+                  <option value="snapshot">Snapshot</option>
+                  <option value="webcam">Webcam</option>
+                  <option value="file">Video File</option>
+                </select>
+              </div>
+
+              <div class="stream-fps-group">
+                <label>Processing FPS:</label>
+                <input type="range" id="stream-fps-slider" min="0.5" max="5" step="0.5" value="2">
+                <span id="stream-fps-label">2.0</span>
+              </div>
+
+              <div class="preset-buttons">
+                <button class="preset-btn" data-url="0" data-type="webcam" title="Use built-in webcam">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  Webcam
+                </button>
+                <button class="preset-btn" data-url="/Users/prudhviraj/Downloads/Computer Vision/traffic_video.mp4" data-type="file" title="Highway Traffic video feed simulation">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Highway Cam
+                </button>
+                <button class="preset-btn" data-url="/Users/prudhviraj/Downloads/Computer Vision/intersection_video.mp4" data-type="file" title="Street Intersection video feed simulation">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Intersection Cam
+                </button>
+              </div>
+
+              <div class="stream-controls">
+                <button class="btn btn-accent" id="btn-connect-stream" onclick="connectLiveStream()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Connect
+                </button>
+                <button class="btn btn-danger" id="btn-disconnect-stream" onclick="disconnectLiveStream()" style="display:none;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+                  Disconnect
+                </button>
+              </div>
+
+              <!-- Live stream stats -->
+              <div class="stream-stats" id="stream-stats" style="display:none;">
+                <div class="stat-mini">
+                  <span class="stat-mini-val" id="stat-frames">0</span>
+                  <span class="stat-mini-lbl">Frames</span>
+                </div>
+                <div class="stat-mini">
+                  <span class="stat-mini-val" id="stat-violations" style="color: var(--danger);">0</span>
+                  <span class="stat-mini-lbl">Violations</span>
+                </div>
+                <div class="stat-mini">
+                  <span class="stat-mini-val" id="stat-inference-ms">0</span>
+                  <span class="stat-mini-lbl">Avg ms</span>
+                </div>
+                <div class="stat-mini">
+                  <span class="stat-mini-val" id="stat-fps-actual">0</span>
+                  <span class="stat-mini-lbl">FPS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Middle: CV Workspace -->
+          <div class="glass-card workspace-card">
+            <div class="workspace-header">
+              <h2 style="font-size: 1.1rem; font-weight: 700;">Visual Processing Workspace</h2>
+              <div class="workspace-actions">
+                <button class="btn" id="toggle-preprocess">Original View</button>
+                <button class="btn btn-primary" id="btn-run-analysis">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Run AI Pipeline
+                </button>
+              </div>
+            </div>
+            
+            <!-- Canvas viewport -->
+            <div class="canvas-viewport" id="canvas-viewport">
+              <canvas id="image-canvas"></canvas>
+              <div class="scan-line" id="scan-line"></div>
+              <div class="detection-popup" id="detection-popup"></div>
+            </div>
+            
+            <!-- Bottom HUD: Filter controls & OCR -->
+            <div class="pipeline-hud">
+              <!-- Preprocessing filters -->
+              <div class="hud-panel">
+                <div class="hud-title">Image Preprocessing Filters</div>
+                <div class="filter-toggles">
+                  <div class="toggle-row">
+                    <span>Low-Light Enhancer (CLAHE)</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="enhancer-lowlight" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <span>Weather De-noiser (Rain/Fog)</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="enhancer-weather" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="toggle-row">
+                    <span>Motion Deblur & Contrast</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="enhancer-deblur" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- License Plate OCR HUD -->
+              <div class="hud-panel">
+                <div class="hud-title">ANPR / OCR Extraction</div>
+                <div class="ocr-hud-content">
+                  <div class="plate-ocr-box" id="plate-ocr-box">-- READY --</div>
+                  <div style="font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                    <span>OCR Conf: <strong id="ocr-conf" style="color: var(--accent-cyan);">0%</strong></span>
+                    <span>Tracking: <strong style="color: var(--text-secondary);">DeepSORT</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right: Citation evidence generator -->
+          <div class="glass-card evidence-card" id="evidence-card-element">
+            <div class="evidence-header">
+              <h2 style="font-size: 1.1rem; font-weight: 700;">Evidence Citation</h2>
+              <span class="severity-badge badge-info" id="violation-severity">--</span>
+            </div>
+            
+            <div class="evidence-preview" id="evidence-preview-img" style="background-image: url('');">
+              <div class="crop-magnify" id="plate-magnifier" style="background-image: url(''); display: none;"></div>
+            </div>
+            
+            <div>
+              <table class="meta-table">
+                <tr>
+                  <td class="meta-label">Ticket ID:</td>
+                  <td class="meta-val ticket-id" id="meta-ticket-id">--</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Violation:</td>
+                  <td class="meta-val" id="meta-type" style="color: #EF4444;">--</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Violation Risk:</td>
+                  <td class="meta-val" id="meta-risk">--</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">License Plate:</td>
+                  <td class="meta-val"><span class="plate-cell" id="meta-plate">--</span></td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Offender Status:</td>
+                  <td class="meta-val" id="meta-offender-status">--</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Detection Conf:</td>
+                  <td class="meta-val" id="meta-confidence" style="color: var(--success);">0%</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Vehicle Type:</td>
+                  <td class="meta-val" id="meta-vehicle-class">--</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Timestamp:</td>
+                  <td class="meta-val" id="meta-time">--</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">Assessed Penalty:</td>
+                  <td class="meta-val" id="meta-fine" style="font-size: 1.1rem; font-weight: 800; color: #FFF;">--</td>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="evidence-actions">
+              <button class="btn-approve" id="btn-approve-violation">Approve & Issue Citation</button>
+              <div class="action-row-split">
+                <button class="btn-review" id="btn-review-violation">Escalate Review</button>
+                <button class="btn-dismiss" id="btn-dismiss-violation">Dismiss Event</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- --- TAB 2: ANALYTICS & TRENDS --- -->
+      <section id="tab-analytics" class="tab-pane">
+        <div class="section-header">
+          <div class="header-title">
+            <h1>TrafficEye AI Analytics Dashboard</h1>
+            <p>Real-time violation statistics, repeat offender profiles, and predictive traffic hotspots</p>
+          </div>
+        </div>
+        
+        <!-- KPI Cards Grid -->
+        <div class="stats-cards-grid">
+          <div class="glass-card stats-card-premium">
+            <div class="stats-card-info">
+              <span class="stats-label">Total Violations</span>
+              <span class="stats-val" id="kpi-total-violations">0</span>
+              <span class="stats-change stats-up">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+                +14.8% vs yesterday
+              </span>
+            </div>
+            <div class="stats-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+          </div>
+          
+          <div class="glass-card stats-card-premium">
+            <div class="stats-card-info">
+              <span class="stats-label">Total Fines Assessed</span>
+              <span class="stats-val" id="kpi-total-revenue">$0</span>
+              <span class="stats-change stats-up">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+                +8.2% vs yesterday
+              </span>
+            </div>
+            <div class="stats-card-icon" style="color: var(--accent-purple);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </div>
+          </div>
+          
+          <div class="glass-card stats-card-premium">
+            <div class="stats-card-info">
+              <span class="stats-label">Active Repeat Offenders</span>
+              <span class="stats-val" id="kpi-repeat-offenders">0</span>
+              <span class="stats-change stats-down" style="color: var(--danger);">
+                Critical surveillance active
+              </span>
+            </div>
+            <div class="stats-card-icon" style="color: #EF4444;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+          
+          <div class="glass-card stats-card-premium">
+            <div class="stats-card-info">
+              <span class="stats-label">Enforcement precision</span>
+              <span class="stats-val" id="kpi-map-accuracy">94.2%</span>
+              <span class="stats-change stats-up" style="color: var(--success);">
+                Stable mAP index
+              </span>
+            </div>
+            <div class="stats-card-icon" style="color: var(--accent-cyan);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Predictive Traffic Intelligence Row -->
+        <div class="charts-grid-layout" style="grid-template-columns: 1.1fr 0.9fr; margin-bottom: 1.5rem;">
+          <!-- Left: Hotspot Heatmap -->
+          <div class="glass-card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Predictive Hotspot & Accident Risk Heatmap</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Real-Time ML Projections</span>
+            </div>
+            <div class="chart-container" id="heatmap-container" style="height: 280px; background: rgba(0, 0, 0, 0.2); border-radius: 12px; border: 1px solid var(--glass-border);">
+              <!-- SVG Heatmap grid rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Right: Resource patrol recommendation -->
+          <div class="glass-card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Patrol Deployment Recommendations</span>
+            </div>
+            <div class="table-wrapper" style="border: none; background: transparent; height: 280px; overflow-y: auto;">
+              <table class="ledger-table" style="font-size: 0.8rem;">
+                <thead>
+                  <tr>
+                    <th>Location / Hotspot</th>
+                    <th>Risk Factor</th>
+                    <th>Peak Hour</th>
+                    <th>Patrol Deployment</th>
+                  </tr>
+                </thead>
+                <tbody id="patrol-recommendations-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Layout Grid -->
+        <div class="charts-grid-layout">
+          <!-- Left: Categories SVG chart -->
+          <div class="glass-card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Violations by Predefined Class Category</span>
+            </div>
+            <div class="chart-container" id="category-chart-container">
+              <!-- Custom SVG Bar Chart rendered dynamically -->
+            </div>
+          </div>
+          
+          <!-- Right: Repeat Offenders Summary -->
+          <div class="glass-card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Top Repeat Offenders Register</span>
+            </div>
+            <div class="table-wrapper" style="border: none; background: transparent; height: 260px; overflow-y: auto;">
+              <table class="ledger-table" style="font-size: 0.8rem;">
+                <thead>
+                  <tr>
+                    <th>License Plate</th>
+                    <th>Total Violations</th>
+                    <th>Vehicle</th>
+                    <th>Average Risk</th>
+                    <th>Surveillance Status</th>
+                  </tr>
+                </thead>
+                <tbody id="repeat-offenders-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bottom: Trend chart -->
+        <div class="glass-card chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Temporal Violation Volume Trend (Hourly Analytics)</span>
+          </div>
+          <div class="chart-container" id="trend-chart-container">
+            <!-- Custom SVG Line Chart rendered dynamically -->
+          </div>
+        </div>
+      </section>
+      
+      <!-- --- TAB 3: VIOLATIONS LEDGER --- -->
+      <section id="tab-ledger" class="tab-pane">
+        <div class="section-header">
+          <div class="header-title">
+            <h1>Enforcement Records Ledger</h1>
+            <p>Search, review, and manage verified citation cases and evidence metadata</p>
+          </div>
+          <button class="btn btn-primary" id="btn-export-ledger">Export CSV Report</button>
+        </div>
+        
+        <div class="glass-card">
+          <div class="ledger-controls">
+            <div class="search-input-wrapper">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="search-plate" class="input-field" placeholder="Search by Registration Number (e.g. MH-12)">
+            </div>
+            
+            <select id="filter-violation" class="select-field">
+              <option value="ALL">All Violation Types</option>
+              <option value="HELMET_NON_COMPLIANCE">Helmet Non-compliance</option>
+              <option value="SEATBELT_NON_COMPLIANCE">Seatbelt Non-compliance</option>
+              <option value="TRIPLE_RIDING">Triple Riding</option>
+              <option value="WRONG_SIDE_DRIVING">Wrong-Side Driving</option>
+              <option value="STOP_LINE_VIOLATION">Stop-line Violation</option>
+              <option value="RED_LIGHT_VIOLATION">Red-Light Violation</option>
+              <option value="ILLEGAL_PARKING">Illegal Parking</option>
+            </select>
+            
+            <select id="filter-status" class="select-field">
+              <option value="ALL">All Statuses</option>
+              <option value="APPROVED">Approved / Issued</option>
+              <option value="PENDING_REVIEW">Pending Review</option>
+              <option value="DISMISSED">Dismissed</option>
+            </select>
+          </div>
+          
+          <!-- Table -->
+          <div class="table-wrapper">
+            <table class="ledger-table" id="ledger-table">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Timestamp</th>
+                  <th>License Plate</th>
+                  <th>Violation Type</th>
+                  <th>Vehicle</th>
+                  <th>Risk Score</th>
+                  <th>Offender Status</th>
+                  <th>Fine</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ledger-table-body">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Pagination -->
+          <div class="pagination">
+            <div class="pagination-info" id="ledger-pagination-info">Showing 0-0 of 0 entries</div>
+            <div class="pagination-buttons">
+              <button class="btn" id="btn-ledger-prev" disabled>Previous</button>
+              <button class="btn" id="btn-ledger-next" disabled>Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- --- TAB 4: BTP SUBMISSION HUB --- -->
+      <section id="tab-btphub" class="tab-pane">
+        <div class="section-header">
+          <div class="header-title">
+            <h1>BTP Submission & Integration Hub</h1>
+            <p>Enforcement context metrics and development timelines for Bengaluru Traffic Police (BTP)</p>
+          </div>
+        </div>
+
+        <!-- Bangalore Crisis Stats Cards -->
+        <div class="stats-cards-grid" style="margin-bottom: 1.5rem;">
+          <div class="glass-card stats-card-premium" style="border-left: 3px solid var(--danger);">
+            <div class="stats-card-info">
+              <span class="stats-label">BTP Registered Cases (2024)</span>
+              <span class="stats-val" style="color: #F87171;">82.86 Lakhs</span>
+              <span class="stats-change" style="color: var(--text-muted);">~22,700 violations / day</span>
+            </div>
+            <div class="stats-card-icon" style="color: #F87171; background: rgba(239, 68, 68, 0.05);"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+          </div>
+
+          <div class="glass-card stats-card-premium" style="border-left: 3px solid var(--danger);">
+            <div class="stats-card-info">
+              <span class="stats-label">Road Deaths (2024)</span>
+              <span class="stats-val" style="color: #F87171;">893 Fatalities</span>
+              <span class="stats-change" style="color: var(--text-muted);">91% Bikers & Pedestrians</span>
+            </div>
+            <div class="stats-card-icon" style="color: #F87171; background: rgba(239, 68, 68, 0.05);"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/></svg></div>
+          </div>
+
+          <div class="glass-card stats-card-premium" style="border-left: 3px solid var(--warning);">
+            <div class="stats-card-info">
+              <span class="stats-label">Road Crashes (2024)</span>
+              <span class="stats-val" style="color: #FBBF24;">4,784 Accidents</span>
+              <span class="stats-change" style="color: var(--text-muted);">-4% decrease YoY</span>
+            </div>
+            <div class="stats-card-icon" style="color: #FBBF24; background: rgba(245, 158, 11, 0.05);"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
+          </div>
+
+          <div class="glass-card stats-card-premium" style="border-left: 3px solid var(--success);">
+            <div class="stats-card-info">
+              <span class="stats-label">BTP Fine Collections (2024)</span>
+              <span class="stats-val" style="color: #34D399;">₹80.9 Crores</span>
+              <span class="stats-change" style="color: var(--text-muted);">Contactless enforcement active</span>
+            </div>
+            <div class="stats-card-icon" style="color: #34D399; background: rgba(16, 185, 129, 0.05);"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          </div>
+        </div>
+
+        <div class="charts-grid-layout" style="grid-template-columns: 1.15fr 0.85fr; margin-bottom: 1.5rem;">
+          <!-- Left: 2-Day Implementation Timeline -->
+          <div class="glass-card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">2-Day Hackathon Implementation Roadmap</span>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem 0;">
+              <div style="border-left: 2px solid var(--border-glow-active); padding-left: 1.25rem; position: relative;">
+                <div style="position: absolute; left: -6px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan);"></div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--accent-cyan);">PHASE 1 &middot; Day 1 Morning (0-4 hrs)</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  Setup FastAPI REST backend + SQLite db schema. Initialize pre-trained YOLOv11 detectors for vehicle classifications and PaddleOCR/EasyOCR formats for plate recognitions.
+                </div>
+              </div>
+
+              <div style="border-left: 2px solid var(--border-glow-active); padding-left: 1.25rem; position: relative;">
+                <div style="position: absolute; left: -6px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-purple); box-shadow: 0 0 8px var(--accent-purple);"></div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--accent-purple);">PHASE 2 &middot; Day 1 Afternoon (4-8 hrs)</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  Add helmet/seatbelt safety infraction checks. Integrate DeepSORT tracker to trace vehicles across frames. Code the Violation Impact Score (VIS) matrix equations.
+                </div>
+              </div>
+
+              <div style="border-left: 2px solid var(--border-glow-active); padding-left: 1.25rem; position: relative;">
+                <div style="position: absolute; left: -6px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--warning); box-shadow: 0 0 8px var(--warning);"></div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--warning);">PHASE 3 &middot; Day 2 Morning (8-14 hrs)</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  Implement reactive visual frontend layout. Connect repeat offender SQLite aggregation lookups. Build custom predictive intelligence hotspot heatmaps.
+                </div>
+              </div>
+
+              <div style="border-left: 2px solid var(--border-glow-active); padding-left: 1.25rem; position: relative;">
+                <div style="position: absolute; left: -6px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success);"></div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--success);">PHASE 4 &middot; Day 2 Afternoon (14-20 hrs)</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  Compile end-to-end RTSP pipelines. Generate tamper-proof PDF evidence sheets. Set up Docker Compose configurations for full-stack service containers.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: BTP ITMS Infrastructure Gaps -->
+          <div class="glass-card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Existing BTP ITMS Infrastructure Gaps</span>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.8rem;">
+              <div style="display: flex; gap: 0.5rem; align-items: start;">
+                <span style="color: #EF4444; font-weight: 800;">✕</span>
+                <div><strong>No Helmet / Seatbelt AI:</strong> Existing cameras only trace red lights. Rider compliance is not checked automatically.</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: start;">
+                <span style="color: #EF4444; font-weight: 800;">✕</span>
+                <div><strong>No Triple-Riding Model:</strong> Motorcycles carrying 3+ passengers are not flagged by standard ITMS scripts.</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: start;">
+                <span style="color: #EF4444; font-weight: 800;">✕</span>
+                <div><strong>No Offender Profiling:</strong> Prior violations are indexed statically. Repeating offenders are not tracked across stations.</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: start;">
+                <span style="color: #EF4444; font-weight: 800;">✕</span>
+                <div><strong>No Predictive Dispatch:</strong> Force deployment is scheduled manually rather than guided by ML hotspot analytics.</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: start;">
+                <span style="color: #EF4444; font-weight: 800;">✕</span>
+                <div><strong>No Risk-Weighting:</strong> High-density hazards are mixed with minor side-street illegal parking events in the timeline.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Open Source Technical Backbones -->
+        <div class="glass-card">
+          <h2 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Core GitHub Reference Repositories</h2>
+          <div class="table-wrapper" style="border: none; background: transparent;">
+            <table class="ledger-table" style="font-size: 0.8rem;">
+              <thead>
+                <tr>
+                  <th>Component</th>
+                  <th>Repository Name & Link</th>
+                  <th>Description</th>
+                  <th>Surveillance Badge</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color: var(--accent-cyan); font-weight:700;">Detection Core</td>
+                  <td><a href="https://github.com/ultralytics/ultralytics" target="_blank" style="color:#FFF; text-decoration:underline;">ultralytics/ultralytics</a></td>
+                  <td>Official YOLOv11 engine. Backbone of vehicle classifications and bounding box overlays.</td>
+                  <td><span class="status-badge status-approved">⭐ 40K+ STARS</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--accent-cyan); font-weight:700;">Tracking Core</td>
+                  <td><a href="https://github.com/nwojke/deep_sort" target="_blank" style="color:#FFF; text-decoration:underline;">nwojke/deep_sort</a></td>
+                  <td>DeepSORT tracking matrix. Maintains persistent vehicle IDs across lane occlusions.</td>
+                  <td><span class="status-badge status-approved">⭐ 8K+ STARS</span></td>
+                </tr>
+                <tr>
+                  <td style="color: #FBBF24; font-weight:700;">Indian ANPR</td>
+                  <td><a href="https://github.com/lavanyashree2805/yolov8-license-plate-india" target="_blank" style="color:#FFF; text-decoration:underline;">lavanyashree2805/yolov8-license-plate-india</a></td>
+                  <td>Custom model weights calibrated specifically for Indian non-standard plate formats.</td>
+                  <td><span class="status-badge status-review">BTP FORMATTED</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--accent-purple); font-weight:700;">OCR Transcription</td>
+                  <td><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" style="color:#FFF; text-decoration:underline;">PaddlePaddle/PaddleOCR</a></td>
+                  <td>Best-in-class multilingual OCR text extractor. High precision on low-quality plates.</td>
+                  <td><span class="status-badge status-approved">⭐ 45K+ STARS</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+      <!-- --- TAB 5: SYSTEM SETTINGS --- -->
+      <section id="tab-settings" class="tab-pane">
+        <div class="section-header">
+          <div class="header-title">
+            <h1>System Configuration</h1>
+            <p>Tune core computer vision thresholds, OCR parameters, and alerting interfaces</p>
+          </div>
+        </div>
+        
+        <div class="settings-grid">
+          <!-- CV Thresholds Card -->
+          <div class="glass-card settings-card">
+            <h2 style="font-size: 1.1rem; font-weight: 700; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">AI Detection Confidence Thresholds</h2>
+            
+            <div class="setting-item-group">
+              <div style="display: flex; justify-content: space-between;">
+                <label for="range-vehicle-thresh">Vehicle Detection Threshold</label>
+                <span id="val-vehicle-thresh" style="font-weight: 600; color: var(--accent-cyan);">75%</span>
+              </div>
+              <input type="range" id="range-vehicle-thresh" min="50" max="95" value="75" style="accent-color: var(--accent-cyan);">
+            </div>
+            
+            <div class="setting-item-group">
+              <div style="display: flex; justify-content: space-between;">
+                <label for="range-violation-thresh">Violation Detection Severity Filter</label>
+                <span id="val-violation-thresh" style="font-weight: 600; color: var(--accent-cyan);">80%</span>
+              </div>
+              <input type="range" id="range-violation-thresh" min="50" max="95" value="80" style="accent-color: var(--accent-cyan);">
+            </div>
+            
+            <div class="setting-item-group">
+              <div style="display: flex; justify-content: space-between;">
+                <label for="range-ocr-thresh">ANPR / OCR Confidence Floor</label>
+                <span id="val-ocr-thresh" style="font-weight: 600; color: var(--accent-cyan);">70%</span>
+              </div>
+              <input type="range" id="range-ocr-thresh" min="50" max="95" value="70" style="accent-color: var(--accent-cyan);">
+            </div>
+          </div>
+          
+          <!-- OCR & API Configuration Card -->
+          <div class="glass-card settings-card">
+            <h2 style="font-size: 1.1rem; font-weight: 700; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">OCR Language & Integration</h2>
+            
+            <div class="setting-item-group">
+              <label for="select-ocr-engine">OCR Reading Model</label>
+              <select id="select-ocr-engine" class="select-field" style="width: 100%;">
+                <option value="tesseract">Standard LSTM Tesseract engine (Latin characters)</option>
+                <option value="easyocr" selected>EasyOCR deep learning model (Multilingual)</option>
+                <option value="google-vision">Google Cloud Vision OCR API (Cloud Enterprise)</option>
+              </select>
+            </div>
+            
+            <div class="setting-item-group">
+              <label for="input-webhook">Citation Event Webhook URL (JSON Dispatch)</label>
+              <input type="text" id="input-webhook" class="input-field" value="https://api.trafficeye-ai.gov/v1/citations" style="padding-left: 1rem;">
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: auto;">
+              <button class="btn" id="btn-reset-settings">Reset Defaults</button>
+              <button class="btn btn-primary" id="btn-save-settings">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

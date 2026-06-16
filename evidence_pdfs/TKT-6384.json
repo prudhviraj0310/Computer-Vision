@@ -1,0 +1,12 @@
+{
+    "type": "HELMET_NON_COMPLIANCE",
+    "plate": "KA01AB1234",
+    "confidence": "96%",
+    "vehicle": "Motorcycle",
+    "risk_score": 78,
+    "timestamp": "2026-06-15 14:10",
+    "fine": "$150.00",
+    "location": "Sector-4 Crossroads",
+    "speed": "42 km/h",
+    "weather": "Clear"
+}
